@@ -21,11 +21,11 @@ PImage src, dst;
 boolean debug;
 int fillColor = 0;
 
-int camW = 160;
-int camH = 120;
+int camW = 320;
+int camH = 240;
 
 void setup() {
-  size(1024, 768);
+  size(720, 480);
   frameRate(30);
 //  println(Arduino.list());
 //  arduino = new Arduino(this, "/dev/tty.usbmodem1411", 57600);
@@ -53,7 +53,6 @@ void setup() {
 
   cam = new Capture(this, camW, camH, "/dev/video0", 30);
   cam.start();
-  attention = new Attention(this, cam);
 }
 
 public PImage getCopy(PImage image) {
@@ -73,9 +72,10 @@ void draw() {
 //    PImage resized = loadImageAlpha(out, 255);
 //    image(out, 0, 0);
     
-    PImage resized = getCopy(cam);
+//    PImage resized = getCopy(cam);
+    PImage resized = cam.get(int(camW/4), int(camH/3), int(camW*0.5), int(camH*0.33));
     resized.resize(width, height);
-    resized.filter(THRESHOLD, .5);
+    resized.filter(THRESHOLD, map(mouseY, 0, height, 0, 1));
     loadImageAlpha(resized, 255);
     set(0, 0, resized);
   }
